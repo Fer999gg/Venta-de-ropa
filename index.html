@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CÓDIGO URBANO — Ropa Urbana</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ec;
+    --cream: #ede9e1;
+    --acid: #c8f135;
+    --gray: #1e1e1e;
+    --gray2: #2e2e2e;
+    --mid: #7a7a7a;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(10,10,10,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--acid);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--mid);
+    font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-actions { display: flex; gap: 20px; align-items: center; }
+  .nav-icon {
+    background: none; border: none; cursor: pointer;
+    color: var(--mid); font-size: 20px; transition: color 0.2s;
+    display: flex; align-items: center;
+  }
+  .nav-icon:hover { color: var(--white); }
+  .cart-btn {
+    background: var(--acid); color: var(--black);
+    border: none; cursor: pointer;
+    padding: 8px 20px;
+    font-family: var(--font-body); font-size: 12px;
+    font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s;
+  }
+  .cart-btn:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 64px;
+  }
+  .hero-left {
+    padding: 80px 48px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-tag {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--acid); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before {
+    content: ''; display: inline-block;
+    width: 32px; height: 1px; background: var(--acid);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(80px, 9vw, 140px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+  .hero-title span { color: var(--acid); }
+  .hero-sub {
+    font-size: 15px; color: var(--mid); line-height: 1.8;
+    max-width: 360px; margin-bottom: 48px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--acid); color: var(--black);
+    padding: 16px 36px;
+    font-family: var(--font-body); font-size: 13px;
+    font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    width: fit-content;
+  }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: transparent; color: var(--white);
+    padding: 15px 36px;
+    font-family: var(--font-body); font-size: 13px;
+    font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; border: 1px solid #3a3a3a; cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    width: fit-content;
+  }
+  .btn-outline:hover { border-color: var(--white); transform: translateY(-2px); }
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: var(--gray);
+  }
+  .hero-image-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #141414 0%, #1a1a1a 50%, #0f0f0f 100%);
+    position: relative;
+  }
+  .hero-badge {
+    position: absolute; top: 40px; left: 40px;
+    background: var(--acid); color: var(--black);
+    font-family: var(--font-display); font-size: 13px;
+    letter-spacing: 2px; padding: 8px 16px;
+  }
+  .hero-model-shape {
+    width: 260px; height: 380px;
+    background: var(--gray2);
+    position: relative; overflow: hidden;
+  }
+  .hero-model-shape::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 8px,
+      rgba(200,241,53,0.04) 8px, rgba(200,241,53,0.04) 9px
+    );
+  }
+  .hero-stats {
+    position: absolute; bottom: 48px; right: 48px;
+    display: flex; gap: 32px;
+  }
+  .hero-stat { text-align: right; }
+  .hero-stat-num {
+    font-family: var(--font-display); font-size: 40px;
+    color: var(--white); line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--mid); margin-top: 4px;
+  }
+
+  /* MARQUEE */
+  .marquee-bar {
+    background: var(--acid); color: var(--black);
+    padding: 12px 0; overflow: hidden; white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+  }
+  .marquee-track span {
+    font-family: var(--font-display);
+    font-size: 18px; letter-spacing: 4px;
+    margin: 0 40px;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SECCIÓN CATEGORÍAS */
+  .section { padding: 100px 48px; }
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--acid); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1; letter-spacing: 2px;
+    color: var(--white); margin-bottom: 48px;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 280px;
+    gap: 4px;
+  }
+  .cat-card {
+    position: relative; overflow: hidden; cursor: pointer;
+    background: var(--gray);
+  }
+  .cat-card:first-child { grid-row: span 2; }
+  .cat-bg {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    transition: transform 0.6s ease;
+  }
+  .cat-card:hover .cat-bg { transform: scale(1.05); }
+  .cat-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+  }
+  .cat-info {
+    position: absolute; bottom: 24px; left: 24px; right: 24px;
+  }
+  .cat-name {
+    font-family: var(--font-display);
+    font-size: 32px; letter-spacing: 2px;
+    color: var(--white); line-height: 1;
+  }
+  .cat-count {
+    font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(245,242,236,0.5); margin-top: 4px;
+  }
+  .cat-arrow {
+    position: absolute; top: 20px; right: 20px;
+    width: 36px; height: 36px; border: 1px solid rgba(245,242,236,0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--white); font-size: 18px;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .cat-card:hover .cat-arrow { opacity: 1; }
+
+  /* Patrones SVG para simular imágenes */
+  .pat-1 { background: repeating-linear-gradient(45deg, #1a1a1a 0px, #1a1a1a 20px, #222 20px, #222 40px); }
+  .pat-2 { background: repeating-linear-gradient(-45deg, #181818 0px, #181818 15px, #1f1f1f 15px, #1f1f1f 30px); }
+  .pat-3 { background: repeating-linear-gradient(90deg, #1c1c1c 0px, #1c1c1c 10px, #222 10px, #222 20px); }
+  .pat-4 { background: repeating-linear-gradient(0deg, #1a1a1a 0px, #1a1a1a 12px, #212121 12px, #212121 24px); }
+  .cat-label-pill {
+    position: absolute; top: 20px; left: 20px;
+    background: var(--acid); color: var(--black);
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  /* PRODUCTOS */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .product-card {
+    background: var(--gray);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .product-card:hover { background: var(--gray2); }
+  .product-img {
+    width: 100%; aspect-ratio: 3/4;
+    background: #1a1a1a;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-img-inner {
+    width: 80%; height: 80%;
+    position: relative;
+  }
+  .product-icon {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-img-inner svg { width: 100%; height: 100%; opacity: 0.15; }
+  .product-tag {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--acid); color: var(--black);
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 8px;
+  }
+  .product-tag.sale { background: #e74c3c; color: var(--white); }
+  .product-actions {
+    position: absolute; bottom: 12px; right: 12px;
+    display: flex; gap: 8px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .product-card:hover .product-actions { opacity: 1; transform: translateY(0); }
+  .product-action-btn {
+    width: 36px; height: 36px; border: 1px solid rgba(245,242,236,0.3);
+    background: rgba(10,10,10,0.8);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--white); font-size: 16px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .product-action-btn:hover { background: var(--acid); color: var(--black); border-color: var(--acid); }
+  .product-info { padding: 16px; }
+  .product-brand {
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 4px;
+  }
+  .product-name {
+    font-size: 14px; font-weight: 500; color: var(--white);
+    margin-bottom: 8px; line-height: 1.4;
+  }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price {
+    font-family: var(--font-display); font-size: 22px;
+    letter-spacing: 1px; color: var(--white);
+  }
+  .product-price .old-price {
+    font-size: 14px; color: var(--mid);
+    text-decoration: line-through; margin-right: 8px;
+    font-family: var(--font-body);
+  }
+  .product-sizes {
+    display: flex; gap: 4px;
+  }
+  .size-dot {
+    width: 22px; height: 22px; border: 1px solid #3a3a3a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; letter-spacing: 0; color: var(--mid);
+    cursor: pointer; transition: background 0.15s, color 0.15s;
+  }
+  .size-dot:hover { background: var(--white); color: var(--black); }
+
+  /* BANNER */
+  .banner {
+    margin: 0 48px;
+    background: var(--acid);
+    padding: 60px 72px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; position: relative; overflow: hidden;
+  }
+  .banner::before {
+    content: 'DROP';
+    position: absolute; right: -20px; top: -20px;
+    font-family: var(--font-display); font-size: 200px;
+    line-height: 1; color: rgba(0,0,0,0.06);
+    pointer-events: none;
+  }
+  .banner-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95; letter-spacing: 2px;
+    color: var(--black);
+  }
+  .banner-sub { font-size: 14px; color: rgba(0,0,0,0.6); margin-top: 12px; max-width: 360px; }
+  .banner-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--black); color: var(--acid);
+    padding: 18px 40px;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none; white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .banner-cta:hover { opacity: 0.85; }
+
+  /* NEWSLETTER */
+  .newsletter { padding: 80px 48px; background: var(--gray); }
+  .newsletter-inner {
+    max-width: 600px; margin: 0 auto; text-align: center;
+  }
+  .newsletter-title {
+    font-family: var(--font-display);
+    font-size: 56px; letter-spacing: 3px;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .newsletter-sub { color: var(--mid); margin-bottom: 32px; }
+  .newsletter-form { display: flex; gap: 0; max-width: 480px; margin: 0 auto; }
+  .newsletter-input {
+    flex: 1; padding: 14px 20px;
+    background: var(--black); border: 1px solid #3a3a3a;
+    border-right: none;
+    color: var(--white); font-family: var(--font-body); font-size: 14px;
+    outline: none;
+  }
+  .newsletter-input::placeholder { color: var(--mid); }
+  .newsletter-input:focus { border-color: var(--acid); }
+  .newsletter-submit {
+    background: var(--acid); color: var(--black);
+    border: none; cursor: pointer;
+    padding: 14px 28px;
+    font-family: var(--font-body); font-size: 12px;
+    font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .newsletter-submit:hover { opacity: 0.85; }
+
+  /* FOOTER */
+  footer {
+    padding: 60px 48px 32px;
+    border-top: 1px solid #1e1e1e;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+  .footer-brand-name {
+    font-family: var(--font-display);
+    font-size: 40px; letter-spacing: 4px;
+    color: var(--acid); margin-bottom: 12px;
+  }
+  .footer-brand-desc { font-size: 13px; color: var(--mid); line-height: 1.7; max-width: 240px; }
+  .footer-col-title {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--white); margin-bottom: 20px; font-weight: 500;
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a {
+    text-decoration: none; font-size: 13px; color: var(--mid);
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid #1e1e1e; padding-top: 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-copy { font-size: 12px; color: #444; }
+  .social-links { display: flex; gap: 16px; }
+  .social-link {
+    width: 36px; height: 36px; border: 1px solid #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--mid); font-size: 16px; text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .social-link:hover { border-color: var(--acid); color: var(--acid); }
+
+  /* MOBILE BÁSICO */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .section { padding: 60px 20px; }
+    .categories-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .cat-card:first-child { grid-row: span 1; grid-column: span 2; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .banner { margin: 0 20px; padding: 40px 32px; flex-direction: column; }
+    .newsletter { padding: 60px 20px; }
+    footer { padding: 40px 20px 20px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* Animaciones de entrada */
+  [data-reveal] {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  [data-reveal].visible {
+    opacity: 1; transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">CÓDIGO URBANO</a>
+  <ul class="nav-links">
+    <li><a href="#categorias">Categorías</a></li>
+    <li><a href="#productos">Colección</a></li>
+    <li><a href="#">Drops</a></li>
+    <li><a href="#">Lookbook</a></li>
+    <li><a href="#">Nosotros</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon" aria-label="Buscar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    </button>
+    <button class="nav-icon" aria-label="Cuenta">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+    <button class="cart-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Carrito (0)
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left" data-reveal>
+    <p class="hero-tag">Colección Otoño 2025</p>
+    <h1 class="hero-title">VISTE<br>TU<br><span>ACTITUD</span></h1>
+    <p class="hero-sub">Ropa urbana para los que no siguen tendencias. Las crean. Piezas con carácter, materiales de calidad y diseño sin compromiso.</p>
+    <div class="hero-ctas">
+      <a href="#productos" class="btn-primary">
+        Ver colección
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#categorias" class="btn-outline">Explorar drops</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-image-placeholder">
+      <div class="hero-badge">NEW DROP</div>
+      <div class="hero-model-shape">
+        <svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;opacity:0.08;">
+          <rect width="260" height="380" fill="#c8f135"/>
+          <circle cx="130" cy="80" r="40" fill="#c8f135"/>
+          <rect x="60" y="130" width="140" height="180" rx="8" fill="#c8f135"/>
+          <rect x="20" y="140" width="50" height="120" rx="6" fill="#c8f135"/>
+          <rect x="190" y="140" width="50" height="120" rx="6" fill="#c8f135"/>
+          <rect x="75" y="310" width="45" height="70" rx="4" fill="#c8f135"/>
+          <rect x="140" y="310" width="45" height="70" rx="4" fill="#c8f135"/>
+        </svg>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-num">200+</div>
+          <div class="hero-stat-label">Productos</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">12k</div>
+          <div class="hero-stat-label">Clientes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span>NUEVA COLECCIÓN</span><span>•</span>
+    <span>ENVÍO GRATIS +S/200</span><span>•</span>
+    <span>DISEÑO INDEPENDIENTE</span><span>•</span>
+    <span>HECHO PARA DURAR</span><span>•</span>
+    <span>NUEVA COLECCIÓN</span><span>•</span>
+    <span>ENVÍO GRATIS +S/200</span><span>•</span>
+    <span>DISEÑO INDEPENDIENTE</span><span>•</span>
+    <span>HECHO PARA DURAR</span><span>•</span>
+  </div>
+</div>
+
+<!-- CATEGORÍAS -->
+<section class="section" id="categorias">
+  <p class="section-label" data-reveal>Explora</p>
+  <h2 class="section-title" data-reveal>CATEGORÍAS</h2>
+  <div class="categories-grid" data-reveal>
+
+    <div class="cat-card">
+      <div class="cat-bg pat-1"></div>
+      <div class="cat-overlay"></div>
+      <div class="cat-label-pill">Bestseller</div>
+      <div class="cat-info">
+        <div class="cat-name">HOODIES &<br>SWEATERS</div>
+        <div class="cat-count">64 productos</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-bg pat-2"></div>
+      <div class="cat-overlay"></div>
+      <div class="cat-info">
+        <div class="cat-name">TEES</div>
+        <div class="cat-count">88 productos</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-bg pat-3"></div>
+      <div class="cat-overlay"></div>
+      <div class="cat-info">
+        <div class="cat-name">JOGGERS</div>
+        <div class="cat-count">42 productos</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-bg pat-4"></div>
+      <div class="cat-overlay"></div>
+      <div class="cat-info">
+        <div class="cat-name">ACCESORIOS</div>
+        <div class="cat-count">35 productos</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-bg" style="background: repeating-conic-gradient(#1a1a1a 0% 25%, #1e1e1e 0% 50%) 0 0 / 20px 20px;"></div>
+      <div class="cat-overlay"></div>
+      <div class="cat-label-pill">Nuevo</div>
+      <div class="cat-info">
+        <div class="cat-name">JACKETS</div>
+        <div class="cat-count">28 productos</div>
+      </div>
+      <div class="cat-arrow">→</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section class="section" id="productos" style="padding-top: 20px;">
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:40px;" data-reveal>
+    <div>
+      <p class="section-label">Lo más pedido</p>
+      <h2 class="section-title" style="margin-bottom:0;">FAVORITOS</h2>
+    </div>
+    <a href="#" class="btn-outline" style="margin-bottom: 4px;">Ver todo →</a>
+  </div>
+  <div class="products-grid" data-reveal>
+
+    <!-- Producto 1 -->
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-tag">Nuevo</div>
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <path d="M20 20 Q15 30 15 40 L15 120 L85 120 L85 40 Q85 30 80 20 L65 10 Q50 5 35 10 Z" opacity="0.3"/>
+            <path d="M35 10 Q25 5 15 20 L5 45 L20 50 L20 20 Q27 12 35 10 Z" opacity="0.2"/>
+            <path d="M65 10 Q75 5 85 20 L95 45 L80 50 L80 20 Q73 12 65 10 Z" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn" title="Favorito">♡</button>
+          <button class="product-action-btn" title="Agregar al carrito">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Hoodie Oversize Logo</div>
+        <div class="product-footer">
+          <div class="product-price">S/ 189</div>
+          <div class="product-sizes">
+            <div class="size-dot">S</div>
+            <div class="size-dot">M</div>
+            <div class="size-dot">L</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto 2 -->
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-tag sale">-20%</div>
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <rect x="15" y="15" width="70" height="90" rx="4" opacity="0.3"/>
+            <rect x="25" y="25" width="50" height="8" rx="2" opacity="0.4"/>
+            <rect x="25" y="40" width="35" height="8" rx="2" opacity="0.2"/>
+            <line x1="15" y1="105" x2="85" y2="105" stroke="currentColor" stroke-width="2" opacity="0.2"/>
+            <rect x="30" y="108" width="18" height="30" rx="2" opacity="0.2"/>
+            <rect x="52" y="108" width="18" height="30" rx="2" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn" title="Favorito">♡</button>
+          <button class="product-action-btn" title="Agregar al carrito">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Jogger Cargo Streetwear</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="old-price">S/ 175</span>S/ 140</div>
+          <div class="product-sizes">
+            <div class="size-dot">M</div>
+            <div class="size-dot">L</div>
+            <div class="size-dot">XL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto 3 -->
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <path d="M50 5 L80 25 L80 50 Q80 100 50 115 Q20 100 20 50 L20 25 Z" opacity="0.25"/>
+            <path d="M50 25 L65 35 L65 55 Q65 85 50 95 Q35 85 35 55 L35 35 Z" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn" title="Favorito">♡</button>
+          <button class="product-action-btn" title="Agregar al carrito">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Bomber Varsity Acid</div>
+        <div class="product-footer">
+          <div class="product-price">S/ 259</div>
+          <div class="product-sizes">
+            <div class="size-dot">S</div>
+            <div class="size-dot">M</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producto 4 -->
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-tag">Nuevo</div>
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <rect x="25" y="20" width="50" height="60" rx="6" opacity="0.3"/>
+            <circle cx="50" cy="50" r="15" opacity="0.15"/>
+            <rect x="30" y="85" width="40" height="6" rx="3" opacity="0.2"/>
+            <rect x="20" y="98" width="60" height="30" rx="4" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn" title="Favorito">♡</button>
+          <button class="product-action-btn" title="Agregar al carrito">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Tee Gráfica Urbana Vol.3</div>
+        <div class="product-footer">
+          <div class="product-price">S/ 99</div>
+          <div class="product-sizes">
+            <div class="size-dot">S</div>
+            <div class="size-dot">M</div>
+            <div class="size-dot">L</div>
+            <div class="size-dot">XL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BANNER PROMO -->
+<div class="banner" data-reveal>
+  <div>
+    <h2 class="banner-title">SALE DE<br>FIN DE<br>TEMPORADA</h2>
+    <p class="banner-sub">Hasta 40% de descuento en piezas seleccionadas. Solo por tiempo limitado.</p>
+  </div>
+  <a href="#" class="banner-cta">
+    Ver ofertas
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</div>
+
+<!-- MÁS PRODUCTOS -->
+<section class="section" style="padding-top: 80px;">
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:40px;" data-reveal>
+    <div>
+      <p class="section-label">Recién llegado</p>
+      <h2 class="section-title" style="margin-bottom:0;">NUEVOS DROPS</h2>
+    </div>
+  </div>
+  <div class="products-grid" data-reveal>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-tag">Limited</div>
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <path d="M10 60 Q10 30 50 20 Q90 30 90 60 L90 100 Q80 130 50 135 Q20 130 10 100 Z" opacity="0.2"/>
+            <path d="M30 40 L70 40 L75 90 L50 100 L25 90 Z" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn">♡</button>
+          <button class="product-action-btn">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Bucket Hat Corduroy</div>
+        <div class="product-footer">
+          <div class="product-price">S/ 79</div>
+          <div class="product-sizes">
+            <div class="size-dot">U</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <rect x="20" y="20" width="60" height="100" rx="3" opacity="0.2"/>
+            <rect x="30" y="30" width="40" height="15" rx="2" opacity="0.3"/>
+            <rect x="30" y="52" width="40" height="8" rx="2" opacity="0.15"/>
+            <rect x="30" y="65" width="25" height="8" rx="2" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn">♡</button>
+          <button class="product-action-btn">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Zip Hoodie Essential</div>
+        <div class="product-footer">
+          <div class="product-price">S/ 219</div>
+          <div class="product-sizes">
+            <div class="size-dot">S</div>
+            <div class="size-dot">M</div>
+            <div class="size-dot">L</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-tag sale">-30%</div>
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <path d="M50 10 L90 35 L90 120 L50 130 L10 120 L10 35 Z" opacity="0.2"/>
+            <rect x="30" y="50" width="40" height="40" rx="3" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn">♡</button>
+          <button class="product-action-btn">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Cargos Baggy Wide Leg</div>
+        <div class="product-footer">
+          <div class="product-price"><span class="old-price">S/ 200</span>S/ 140</div>
+          <div class="product-sizes">
+            <div class="size-dot">M</div>
+            <div class="size-dot">L</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">
+        <div class="product-tag">Nuevo</div>
+        <div class="product-img-inner">
+          <svg viewBox="0 0 100 140" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color:#c8f135;">
+            <rect x="15" y="25" width="70" height="90" rx="5" opacity="0.2"/>
+            <path d="M15 45 L50 35 L85 45" stroke="currentColor" stroke-width="2" opacity="0.2" fill="none"/>
+            <circle cx="50" cy="70" r="12" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="product-actions">
+          <button class="product-action-btn">♡</button>
+          <button class="product-action-btn">+</button>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">KRUDO</div>
+        <div class="product-name">Coach Jacket Retro</div>
+        <div class="product-footer">
+          <div class="product-price">S/ 289</div>
+          <div class="product-sizes">
+            <div class="size-dot">S</div>
+            <div class="size-dot">M</div>
+            <div class="size-dot">L</div>
+            <div class="size-dot">XL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter" data-reveal>
+  <div class="newsletter-inner">
+    <h2 class="newsletter-title">ENTRA AL LOOP</h2>
+    <p class="newsletter-sub">Drops exclusivos, preventas y descuentos solo para suscriptores. Sin spam, prometido.</p>
+    <div class="newsletter-form">
+      <input type="email" class="newsletter-input" placeholder="tu@email.com">
+      <button class="newsletter-submit">Suscribir</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">KRUDO</div>
+      <p class="footer-brand-desc">Ropa urbana con identidad propia. Diseño peruano para las calles del mundo.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Tienda</div>
+      <ul class="footer-links">
+        <li><a href="#">Nuevos ingresos</a></li>
+        <li><a href="#">Hoodies</a></li>
+        <li><a href="#">Tees</a></li>
+        <li><a href="#">Joggers</a></li>
+        <li><a href="#">Accesorios</a></li>
+        <li><a href="#">Sale</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Ayuda</div>
+      <ul class="footer-links">
+        <li><a href="#">Guía de tallas</a></li>
+        <li><a href="#">Envíos y devoluciones</a></li>
+        <li><a href="#">Seguimiento</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Marca</div>
+      <ul class="footer-links">
+        <li><a href="#">Nosotros</a></li>
+        <li><a href="#">Lookbook</a></li>
+        <li><a href="#">Colaboraciones</a></li>
+        <li><a href="#">Prensa</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 KRUDO. Todos los derechos reservados.</p>
+    <div class="social-links">
+      <a href="#" class="social-link" title="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a href="#" class="social-link" title="TikTok">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+      </a>
+      <a href="#" class="social-link" title="WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/><path d="M9 10c.5 1 1 1.5 2 2s1.5.5 2 1"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('[data-reveal]');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+
+  document.querySelectorAll('.newsletter-submit').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.previousElementSibling;
+      if (input.value.includes('@')) {
+        btn.textContent = '✓ Listo';
+        btn.style.background = '#0a0a0a';
+        btn.style.color = '#c8f135';
+        input.value = '';
+        setTimeout(() => { btn.textContent = 'Suscribir'; btn.style.background = ''; btn.style.color = ''; }, 3000);
+      }
+    });
+  });
+
+  document.querySelectorAll('.product-action-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.title === 'Agregar al carrito' || btn.textContent === '+') {
+        const cartBtn = document.querySelector('.cart-btn');
+        const match = cartBtn.textContent.match(/\d+/);
+        const count = match ? parseInt(match[0]) + 1 : 1;
+        cartBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Carrito (${count})`;
+      }
+    });
+  });
+</script>
+</body>
+</html>
